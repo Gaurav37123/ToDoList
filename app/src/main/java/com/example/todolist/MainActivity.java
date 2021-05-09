@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -61,12 +64,6 @@ public class MainActivity extends AppCompatActivity implements WorkAdapter.ItemC
         
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
     private void DecryptList(String workString)
     {
         String[] oneClassItem = workString.split(";");
@@ -87,28 +84,33 @@ public class MainActivity extends AppCompatActivity implements WorkAdapter.ItemC
         if(requestCode == 1 && resultCode ==RESULT_OK)
         {
             WorkList.add(new Work(data.getStringExtra("date"),data.getStringExtra("time"),data.getStringExtra("work")));
-            Collections.sort(WorkList, new Comparator<Work>() {
-                @Override
-                public int compare(Work o1, Work o2) {
-                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date1= null;
-                    try {
-                        date1 = format.parse(o1.getDate());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    Date date2= null;
-                    try {
-                        date2 = format.parse(o2.getDate());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    return date1.compareTo(date2);
-                }
-            });
+            SortList();
         }
         myAdapter.notifyDataSetChanged();
     }
+
+    private void SortList() {
+        Collections.sort(WorkList, new Comparator<Work>() {
+            @Override
+            public int compare(Work o1, Work o2) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy'T'hh:mm aa");
+                Date date1= null;
+                try {
+                    date1 = format.parse(o1.getDate()+"T"+o1.getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date date2= null;
+                try {
+                    date2 = format.parse(o2.getDate()+"T"+o2.getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return date1.compareTo(date2);
+            }
+        });
+    }
+
     @Override
     public void onDeleteClick(int index) {
         WorkList.remove(index);

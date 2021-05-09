@@ -11,7 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolder>
 {
@@ -27,7 +30,7 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolder>
         void onDeleteClick(int index);
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView tvDate,tvTime,tvWork;
+        TextView tvDate,tvTime,tvWork,tvStatus;
         ImageView btnDelete;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -35,6 +38,7 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolder>
                 tvTime = itemView.findViewById(R.id.tvTime);
                 tvWork = itemView.findViewById(R.id.tvWork);
                 btnDelete = itemView.findViewById(R.id.btnDelete);
+                tvStatus = itemView.findViewById(R.id.tvStatus);
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -56,6 +60,20 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolder>
         holder.tvDate.setText(list.get(position).getDate());
         holder.tvTime.setText(list.get(position).getTime());
         holder.tvWork.setText(list.get(position).getWork());
+        SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy'T'hh:mm aa");
+        Date date1= null;
+        try {
+            date1 = SDF.parse(list.get(position).getDate()+"T"+list.get(position).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date date2= new Date();
+        SDF.format(date2);
+        if(date1.after(date2))
+            holder.tvStatus.setVisibility(View.GONE);
+        else
+            holder.tvStatus.setVisibility(View.VISIBLE);
+
     }
 
     @Override
