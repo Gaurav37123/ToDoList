@@ -1,4 +1,4 @@
-package com.example.todolist;
+package com.example.todolist.classes;
 
 import java.util.Date;
 

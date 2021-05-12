@@ -15,21 +15,20 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.todolist.classes.ReminderBroadcast;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 public class WorkEntry extends AppCompatActivity {
 
@@ -70,8 +69,8 @@ public class WorkEntry extends AppCompatActivity {
                 String workDetails=etWorkDetails.getText().toString().trim();
                 time = tvTimeEntry.getText().toString().trim();
                 if(workDetails.length()>100)
-                    Toast.makeText(WorkEntry.this, "Word Limit is 100", Toast.LENGTH_SHORT).show();
-                else if(workDetails.length()!=0 && date !=null && time!=null)
+                    Toast.makeText(WorkEntry.this, "Character Limit is 100", Toast.LENGTH_SHORT).show();
+                else if(!workDetails.isEmpty() && date !=null && time!=null)
                 {
                     setAlarm(date,time,workDetails);
                     Intent intent = new Intent();
@@ -127,7 +126,7 @@ public class WorkEntry extends AppCompatActivity {
     private void setAlarm(String date, String time,String workDetails)
     {
 
-        Intent intent = new Intent(WorkEntry.this,ReminderBroadcast.class);
+        Intent intent = new Intent(WorkEntry.this, ReminderBroadcast.class);
         intent.putExtra("message",workDetails);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(WorkEntry.this,(int)System.currentTimeMillis(),intent,0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -144,7 +143,6 @@ public class WorkEntry extends AppCompatActivity {
         AlarmDate = calendar.getTime();
         SDF.format(AlarmDate);
         alarmManager.set(AlarmManager.RTC_WAKEUP,AlarmDate.getTime(),pendingIntent);
-        Toast.makeText(this, "Alarm Set in " + (-System.currentTimeMillis()+AlarmDate.getTime())+" millis", Toast.LENGTH_SHORT).show();
 
     }
 

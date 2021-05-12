@@ -33,7 +33,7 @@
         app:layout_constraintHorizontal_bias="0.864"
         app:tint="@color/accent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24"
+        app:srcCompat="@drawable/add_vector"
         tools:ignore="VectorDrawableCompat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
