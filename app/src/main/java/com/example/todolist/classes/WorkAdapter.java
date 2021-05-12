@@ -21,6 +21,7 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolder>
 {
     ArrayList<Work> list;
     ItemClicked activity;
+    // After commit
     public WorkAdapter(Context context,ArrayList<Work> WorkList)
     {
         list = WorkList;
